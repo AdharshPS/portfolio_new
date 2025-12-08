@@ -1,5 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:portfolio_new/constants/contact_constants.dart';
+import 'package:portfolio_new/constants/image_constants.dart';
+import 'package:portfolio_new/constants/text_constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -11,9 +14,6 @@ class ContactMe extends StatefulWidget {
 }
 
 class _ContactMeState extends State<ContactMe> {
-  final String email = 'adharshps000@gmail.com';
-  final String github = 'https://github.com/AdharshPS';
-  final String linkedin = 'https://www.linkedin.com/in/adharshzps/';
   bool _visible = false;
 
   Future<void> _launchUrl(String url) async {
@@ -40,8 +40,7 @@ class _ContactMeState extends State<ContactMe> {
       },
 
       child: Container(
-        width: double.infinity,
-        height: 600, // Center vertically by giving height
+        width: MediaQuery.sizeOf(context).width,
         padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -75,7 +74,6 @@ class _ContactMeState extends State<ContactMe> {
               _visible
                   ? FadeIn(
                       duration: const Duration(seconds: 1),
-
                       child: Container(
                         width: 120,
                         height: 4,
@@ -93,7 +91,7 @@ class _ContactMeState extends State<ContactMe> {
               FadeInUpBig(
                 duration: const Duration(seconds: 1),
                 child: Text(
-                  "I'm open for opportunities, collaborations, or freelance work.\nFeel free to reach out!",
+                  StringConstants.contactMeSubtitle,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: .8),
@@ -112,28 +110,27 @@ class _ContactMeState extends State<ContactMe> {
                 children: [
                   _animatedCard(
                     title: "Email Me",
-                    subtitle: email,
-                    imagePath:
-                        "assets/images/gmail.jpg", // replace with your image
+                    subtitle: ContactConstants.email,
+                    imagePath: ImageConstants.emailIcon,
                     startColor: Colors.blueAccent,
                     endColor: Colors.lightBlue,
-                    onTap: () => _launchUrl('mailto:$email'),
+                    onTap: () => _launchUrl('mailto:${ContactConstants.email}'),
                   ),
                   _animatedCard(
                     title: "GitHub",
                     subtitle: "View my projects",
-                    imagePath: "assets/images/github-logo.jpg",
+                    imagePath: ImageConstants.githubLogo,
                     startColor: Colors.black,
                     endColor: const Color.fromARGB(255, 81, 81, 81),
-                    onTap: () => _launchUrl(github),
+                    onTap: () => _launchUrl(ContactConstants.github),
                   ),
                   _animatedCard(
                     title: "LinkedIn",
                     subtitle: "Connect with me",
-                    imagePath: "assets/images/linkedIn-logo.jpg",
+                    imagePath: ImageConstants.linkedinLogo,
                     startColor: Colors.blue[700]!,
                     endColor: Colors.lightBlueAccent,
-                    onTap: () => _launchUrl(linkedin),
+                    onTap: () => _launchUrl(ContactConstants.linkedin),
                   ),
                 ],
               ),
@@ -190,7 +187,7 @@ class _ContactMeState extends State<ContactMe> {
                     Text(
                       subtitle,
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.85),
+                        color: Colors.white.withValues(alpha: 0.85),
                         fontSize: 12,
                       ),
                       textAlign: TextAlign.center,

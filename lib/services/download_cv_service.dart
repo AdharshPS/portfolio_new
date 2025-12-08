@@ -29,7 +29,7 @@ Future<void> downloadCV(BuildContext context) async {
 
       // ✅ Trigger download
       html.AnchorElement anchorElement = html.AnchorElement(href: url)
-        ..setAttribute("download", "AmalMathewCV.pdf")
+        ..setAttribute("download", "AdharshCV.pdf")
         ..click();
 
       Navigator.pop(context);
@@ -58,7 +58,7 @@ Future<void> downloadCV(BuildContext context) async {
         dir = await getDownloadsDirectory() ?? await getTemporaryDirectory();
       }
 
-      final filePath = '${dir.path}/AmalMathewCV.pdf';
+      final filePath = '${dir.path}/AdharshPSCV.pdf';
       final dio = Dio();
 
       await dio.download(url, filePath);

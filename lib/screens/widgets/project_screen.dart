@@ -14,6 +14,14 @@ class ProjectsScreen extends StatefulWidget {
 class _ProjectsScreenState extends State<ProjectsScreen> {
   bool _visible = false;
 
+  final PageController _pageController = PageController(viewportFraction: 0.9);
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -33,48 +41,46 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
         color: const Color(0xFF0F2027),
         alignment: Alignment.center,
         padding: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Column(
-            children: [
-              SizedBox(height: isMobile ? 10 : 20),
+        child: Column(
+          children: [
+            SizedBox(height: isMobile ? 10 : 20),
+            _visible
+                ? FadeInUpBig(
+                    duration: const Duration(seconds: 1),
 
-              _visible
-                  ? FadeInUpBig(
-                      duration: const Duration(seconds: 1),
-
-                      child: Text(
-                        "My Project",
-                        style: TextStyle(
-                          fontSize: isMobile ? 32 : 48,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                    child: Text(
+                      "My Project",
+                      style: TextStyle(
+                        fontSize: isMobile ? 32 : 48,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
-                    )
-                  : const SizedBox.shrink(),
-              SizedBox(height: isMobile ? 10 : 20),
-              //divider
-              _visible
-                  ? FadeIn(
-                      duration: const Duration(seconds: 1),
-                      child: Container(
-                        width: 120,
-                        height: 4,
-                        decoration: BoxDecoration(
-                          color: Colors.blueAccent,
-                          borderRadius: BorderRadius.circular(2),
-                        ),
+                    ),
+                  )
+                : const SizedBox.shrink(),
+            SizedBox(height: isMobile ? 10 : 20),
+            //divider
+            _visible
+                ? FadeIn(
+                    duration: const Duration(seconds: 1),
+                    child: Container(
+                      width: 120,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: Colors.blueAccent,
+                        borderRadius: BorderRadius.circular(2),
                       ),
-                    )
-                  : const SizedBox.shrink(),
-              SizedBox(height: isMobile ? 30 : 60),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _visible
-                      ? const ProjectCard(
+                    ),
+                  )
+                : const SizedBox.shrink(),
+            SizedBox(height: isMobile ? 30 : 60),
+            isMobile
+                ? Expanded(
+                    child: PageView(
+                      controller: _pageController,
+                      pageSnapping: true,
+                      children: const [
+                        ProjectCard(
                           title: "Paws (Pet Sales App)",
                           description:
                               "PAWS is a user-to-user pet marketplace where users can list pets for sale, browse available pets, and connect directly with sellers or buyers. Built with Firebase, the app supports secure authentication, real-time data handling, and image storage.",
@@ -84,11 +90,8 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                             Color(0xFF2C5364),
                             Color(0xFF0F2027),
                           ],
-                        )
-                      : const SizedBox.shrink(),
-                  const SizedBox(width: 20),
-                  _visible
-                      ? const ProjectCard(
+                        ),
+                        ProjectCard(
                           title: "Notes App",
                           description:
                               "A lightweight and fast notes application built with Flutter, featuring offline-first storage using Hive. Users can create, edit, delete, and organize notes with a clean and intuitive interface. Hive ensures high-performance local data handling without requiring internet access.",
@@ -99,11 +102,8 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                             Color(0xFF4568DC),
                             Color(0xFFB06AB3),
                           ],
-                        )
-                      : const SizedBox.shrink(),
-                  const SizedBox(width: 20),
-                  _visible
-                      ? ProjectCard(
+                        ),
+                        ProjectCard(
                           title: "Netflix UI Clone",
                           description:
                               "A visually accurate clone of the Netflix interface built using Flutter. The app replicates the home screen, movie categories, banners, and detail pages with smooth scrolling and responsive layouts. Designed to showcase UI development skills and component structuring in Flutter.",
@@ -113,12 +113,59 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                             Color(0xFF43C6AC),
                             Color(0xFF191654),
                           ],
-                        )
-                      : const SizedBox.shrink(),
-                ],
-              ),
-            ],
-          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _visible
+                          ? const ProjectCard(
+                              title: "Paws (Pet Sales App)",
+                              description:
+                                  "PAWS is a user-to-user pet marketplace where users can list pets for sale, browse available pets, and connect directly with sellers or buyers. Built with Firebase, the app supports secure authentication, real-time data handling, and image storage.",
+                              imagePath: "assets/images/paws.png",
+                              githubUrl:
+                                  'https://github.com/AdharshPS/paws_app',
+                              gradientColors: [
+                                Color(0xFF2C5364),
+                                Color(0xFF0F2027),
+                              ],
+                            )
+                          : const SizedBox.shrink(),
+                      const SizedBox(width: 20),
+                      _visible
+                          ? const ProjectCard(
+                              title: "Notes App",
+                              description:
+                                  "A lightweight and fast notes application built with Flutter, featuring offline-first storage using Hive. Users can create, edit, delete, and organize notes with a clean and intuitive interface. Hive ensures high-performance local data handling without requiring internet access.",
+                              imagePath: "assets/images/notesapp.png",
+                              githubUrl:
+                                  'https://github.com/AdharshPS/Notes_app_updated',
+                              gradientColors: [
+                                Color(0xFF4568DC),
+                                Color(0xFFB06AB3),
+                              ],
+                            )
+                          : const SizedBox.shrink(),
+                      const SizedBox(width: 20),
+                      _visible
+                          ? ProjectCard(
+                              title: "Netflix UI Clone",
+                              description:
+                                  "A visually accurate clone of the Netflix interface built using Flutter. The app replicates the home screen, movie categories, banners, and detail pages with smooth scrolling and responsive layouts. Designed to showcase UI development skills and component structuring in Flutter.",
+                              imagePath: "assets/images/netflix.png",
+                              githubUrl: 'https://github.com/AdharshPS/Netflix',
+                              gradientColors: [
+                                Color(0xFF43C6AC),
+                                Color(0xFF191654),
+                              ],
+                            )
+                          : const SizedBox.shrink(),
+                    ],
+                  ),
+          ],
         ),
       ),
     );

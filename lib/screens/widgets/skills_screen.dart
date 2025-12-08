@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:portfolio_new/constants/skill_constants.dart';
 
 class SkillsScreen extends StatelessWidget {
   const SkillsScreen({super.key});
@@ -59,49 +60,15 @@ class SkillsScreen extends StatelessWidget {
           // Categories
           FadeInUp(
             duration: const Duration(milliseconds: 1200),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
-                _SkillCategory(
-                  title: "Core Flutter Skills",
-                  skills: [
-                    "Flutter",
-                    "Dart",
-                    "Provider",
-                    "Rest API",
-                    "Firebase",
-                    "Dio",
-                    "Shared Preferences",
-                    "Flutter Secure Storage",
-                    "Playstore & Appstore Deployment",
-                    "Hive",
-                    "Sqflite",
-                  ],
-                ),
-                SizedBox(height: 50),
-                _SkillCategory(
-                  title: "Version Control ",
-                  skills: ["Git / GitHub"],
-                ),
-                SizedBox(height: 30),
-                _SkillCategory(
-                  title: "Tools",
-                  skills: ["Postman", "Hoppscotch"],
-                ),
-                SizedBox(height: 50),
-                _SkillCategory(
-                  title: "Basic Programming Knowledge",
-                  skills: [
-                    "C (Basic)",
-                    "C++ (Basic)",
-                    "HTML (Basic)",
-                    "MySQL (Basic)",
-                    "CSS (Basic)",
-                    "PHP (Basic)",
-                    "JavaScript (Basic)",
-                  ],
-                ),
-              ],
+            child: ListView.separated(
+              itemCount: SkillConstants.skills.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) => _SkillCategory(
+                title: SkillConstants.skills.keys.elementAt(index),
+                skills: SkillConstants.skills.values.elementAt(index),
+              ),
+              separatorBuilder: (context, index) =>
+                  SizedBox(height: isMobile ? 20 : 50),
             ),
           ),
         ],
