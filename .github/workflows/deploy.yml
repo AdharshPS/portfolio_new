@@ -6,8 +6,8 @@ on:
       - dev
       - main
       
-  permissions:
-    contents: write
+permissions:
+  contents: write
 
 jobs:
   build-and-deploy:
