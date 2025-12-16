@@ -58,17 +58,19 @@ class SkillsScreen extends StatelessWidget {
           const SizedBox(height: 60),
 
           // Categories
-          FadeInUp(
-            duration: const Duration(milliseconds: 1200),
-            child: ListView.separated(
-              itemCount: SkillConstants.skills.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) => _SkillCategory(
-                title: SkillConstants.skills.keys.elementAt(index),
-                skills: SkillConstants.skills.values.elementAt(index),
+          IgnorePointer(
+            child: FadeInUp(
+              duration: const Duration(milliseconds: 1200),
+              child: ListView.separated(
+                itemCount: SkillConstants.skills.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) => _SkillCategory(
+                  title: SkillConstants.skills.keys.elementAt(index),
+                  skills: SkillConstants.skills.values.elementAt(index),
+                ),
+                separatorBuilder: (context, index) =>
+                    SizedBox(height: isMobile ? 20 : 50),
               ),
-              separatorBuilder: (context, index) =>
-                  SizedBox(height: isMobile ? 20 : 50),
             ),
           ),
         ],
