@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // For web
 // ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
+import 'package:web/web.dart' as web;
 
 // For mobile/desktop
 import 'dart:io';
@@ -28,10 +28,15 @@ Future<void> downloadCV(BuildContext context) async {
       await Future.delayed(const Duration(seconds: 2)); // fake wait
 
       // ✅ Trigger download
-      html.AnchorElement anchorElement = html.AnchorElement(href: url)
-        ..setAttribute("download", "AdharshCV.pdf")
-        ..click();
+      final anchor = web.document.createElement('a') as web.HTMLAnchorElement
+        ..href = url
+        ..download = 'AdharshCV.pdf'
+        ..style.display = 'none';
 
+      web.document.body!.append(anchor);
+      anchor.click();
+      anchor.remove();
+      if (!context.mounted) return;
       Navigator.pop(context);
       ScaffoldMessenger.of(
         context,
@@ -63,6 +68,7 @@ Future<void> downloadCV(BuildContext context) async {
 
       await dio.download(url, filePath);
 
+      if (!context.mounted) return;
       Navigator.pop(context);
       ScaffoldMessenger.of(
         context,

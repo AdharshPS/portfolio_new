@@ -19,6 +19,7 @@ class _ContactMeState extends State<ContactMe> {
   Future<void> _launchUrl(String url) async {
     final Uri uri = Uri.parse(url);
     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      if (!mounted) return;
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Could not open $url")));
@@ -228,11 +229,13 @@ class _HoverAnimatedContainerState extends State<HoverAnimatedContainer> {
 
   @override
   Widget build(BuildContext context) {
+    final double scaleFactor = isHover ? 1.05 : 1.0;
     return AnimatedContainer(
       duration: const Duration(milliseconds: 250),
       width: widget.width,
       padding: widget.padding,
-      transform: Matrix4.identity()..scale(isHover ? 1.05 : 1.0),
+      transform: Matrix4.identity()
+        ..scaleByDouble(scaleFactor, scaleFactor, scaleFactor, 1.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25),
         gradient: LinearGradient(

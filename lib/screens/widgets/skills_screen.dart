@@ -58,17 +58,19 @@ class SkillsScreen extends StatelessWidget {
           const SizedBox(height: 60),
 
           // Categories
-          FadeInUp(
-            duration: const Duration(milliseconds: 1200),
-            child: ListView.separated(
-              itemCount: SkillConstants.skills.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) => _SkillCategory(
-                title: SkillConstants.skills.keys.elementAt(index),
-                skills: SkillConstants.skills.values.elementAt(index),
+          IgnorePointer(
+            child: FadeInUp(
+              duration: const Duration(milliseconds: 1200),
+              child: ListView.separated(
+                itemCount: SkillConstants.skills.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) => _SkillCategory(
+                  title: SkillConstants.skills.keys.elementAt(index),
+                  skills: SkillConstants.skills.values.elementAt(index),
+                ),
+                separatorBuilder: (context, index) =>
+                    SizedBox(height: isMobile ? 20 : 50),
               ),
-              separatorBuilder: (context, index) =>
-                  SizedBox(height: isMobile ? 20 : 50),
             ),
           ),
         ],
@@ -127,6 +129,7 @@ class _HoverSkillCardState extends State<_HoverSkillCard> {
   @override
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.of(context).size.width < 600;
+    final double scaleFactor = isHovered ? 1.08 : 1.0;
 
     return BounceInUp(
       duration: const Duration(milliseconds: 700),
@@ -137,7 +140,8 @@ class _HoverSkillCardState extends State<_HoverSkillCard> {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeOut,
-          transform: Matrix4.identity()..scale(isHovered ? 1.08 : 1.0),
+          transform: Matrix4.identity()
+            ..scaleByDouble(scaleFactor, scaleFactor, scaleFactor, 1.0),
           width: isMobile ? 150 : 220,
           height: isMobile ? 70 : 90,
           alignment: Alignment.center,
