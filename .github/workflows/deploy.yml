@@ -31,16 +31,21 @@ jobs:
       - name: Build Flutter Web
         run: |
           if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            flutter build web \
-              --release \
-              --base-href="/${{ github.event.repository.name }}/" \
-              --dart-define=ENV=prod
+            ENV_NAME=prod
+            BASE_HREF="/${{ github.event.repository.name }}/"
           else
-            flutter build web \
-              --release \
-              --base-href="/${{ github.event.repository.name }}/dev/" \
-              --dart-define=ENV=dev
+            ENV_NAME=dev
+            BASE_HREF="/${{ github.event.repository.name }}/dev/"
           fi
+
+          echo "Building for environment: $ENV_NAME"
+          echo "Base href: $BASE_HREF"
+
+          flutter build web \
+            --release \
+            --base-href="$BASE_HREF" \
+            --dart-define=ENV=$ENV_NAME \
+            --dart-define=BUILD_VERSION=${{ github.run_number }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

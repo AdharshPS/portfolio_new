@@ -203,6 +203,7 @@ class _ProjectCardState extends State<ProjectCard> {
 
     final Uri url = Uri.parse(widget.githubUrl);
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Could not launch ${widget.githubUrl}")),
       );
