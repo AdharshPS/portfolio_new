@@ -1,0 +1,51 @@
+name: Deploy Portfolio (DEV & PROD)
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    environment: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.0'
+          channel: stable
+
+      - name: Enable Flutter Web
+        run: flutter config --enable-web
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Flutter Web
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            flutter build web \
+              --release \
+              --base-href="/${{ github.event.repository.name }}/" \
+              --dart-define=ENV=prod
+          else
+            flutter build web \
+              --release \
+              --base-href="/${{ github.event.repository.name }}/dev/" \
+              --dart-define=ENV=dev
+          fi
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          destination_dir: ${{ github.ref == 'refs/heads/main' && '' || 'dev' }}
+          publish_dir: build/web
