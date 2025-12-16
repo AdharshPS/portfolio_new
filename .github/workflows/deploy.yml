@@ -57,3 +57,4 @@ jobs:
           publish_branch: gh-pages
           destination_dir: ${{ github.ref == 'refs/heads/main' && '' || 'dev' }}
           publish_dir: build/web
+          keep_files: true
