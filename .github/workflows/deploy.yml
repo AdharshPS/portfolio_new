@@ -5,56 +5,76 @@ on:
     branches:
       - dev
       - main
-      
+
 permissions:
   contents: write
 
 jobs:
-  build-and-deploy:
+  deploy-dev:
+    if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
-
-    environment: ${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }}
+    environment: dev
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
+      - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.38.5'
           channel: stable
 
-      - name: Enable Flutter Web
-        run: flutter config --enable-web
+      - run: flutter config --enable-web
+      - run: flutter clean
+      - run: flutter pub get
 
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Build Flutter Web
+      - name: Build DEV
         run: |
-          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            ENV_NAME=prod
-            BASE_HREF="/${{ github.event.repository.name }}/"
-          else
-            ENV_NAME=dev
-            BASE_HREF="/${{ github.event.repository.name }}/dev/"
-          fi
-
-          echo "Building for environment: $ENV_NAME"
-          echo "Base href: $BASE_HREF"
-
           flutter build web \
             --release \
-            --base-href="$BASE_HREF" \
-            --dart-define=ENV=$ENV_NAME \
+            --base-href="/${{ github.event.repository.name }}/dev/" \
+            --dart-define=ENV=dev \
             --dart-define=BUILD_VERSION=${{ github.run_number }}
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy DEV
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          destination_dir: ${{ github.ref == 'refs/heads/main' && '' || 'dev' }}
           publish_dir: build/web
+          destination_dir: dev
+          keep_files: true
+
+
+  deploy-prod:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: prod
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.5'
+          channel: stable
+
+      - run: flutter config --enable-web
+      - run: flutter clean
+      - run: flutter pub get
+
+      - name: Build PROD
+        run: |
+          flutter build web \
+            --release \
+            --base-href="/${{ github.event.repository.name }}/" \
+            --dart-define=ENV=prod \
+            --dart-define=BUILD_VERSION=${{ github.run_number }}
+
+      - name: Deploy PROD
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: build/web
+          destination_dir: .
           keep_files: true
