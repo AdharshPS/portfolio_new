@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:portfolio_new/constants/project_constants.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -79,91 +80,53 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                     child: PageView(
                       controller: _pageController,
                       pageSnapping: true,
-                      children: const [
-                        ProjectCard(
-                          title: "Paws (Pet Sales App)",
-                          description:
-                              "PAWS is a user-to-user pet marketplace where users can list pets for sale, browse available pets, and connect directly with sellers or buyers. Built with Firebase, the app supports secure authentication, real-time data handling, and image storage.",
-                          imagePath: "assets/images/paws.png",
-                          githubUrl: 'https://github.com/AdharshPS/paws_app',
-                          gradientColors: [
-                            Color(0xFF2C5364),
-                            Color(0xFF0F2027),
-                          ],
-                        ),
-                        ProjectCard(
-                          title: "Notes App",
-                          description:
-                              "A lightweight and fast notes application built with Flutter, featuring offline-first storage using Hive. Users can create, edit, delete, and organize notes with a clean and intuitive interface. Hive ensures high-performance local data handling without requiring internet access.",
-                          imagePath: "assets/images/notesapp.png",
-                          githubUrl:
-                              'https://github.com/AdharshPS/Notes_app_updated',
-                          gradientColors: [
-                            Color(0xFF4568DC),
-                            Color(0xFFB06AB3),
-                          ],
-                        ),
-                        ProjectCard(
-                          title: "Netflix UI Clone",
-                          description:
-                              "A visually accurate clone of the Netflix interface built using Flutter. The app replicates the home screen, movie categories, banners, and detail pages with smooth scrolling and responsive layouts. Designed to showcase UI development skills and component structuring in Flutter.",
-                          imagePath: "assets/images/netflix.png",
-                          githubUrl: 'https://github.com/AdharshPS/Netflix',
-                          gradientColors: [
-                            Color(0xFF43C6AC),
-                            Color(0xFF191654),
-                          ],
-                        ),
-                      ],
+                      children: List.generate(
+                        ProjectConstants.projects.length,
+                        (index) {
+                          final project = ProjectConstants.projects[index];
+                          return ProjectCard(
+                            title: project.title,
+                            description: project.description,
+                            imagePath: project.imagePath,
+                            githubUrl: project.gitHubUrl,
+                            gradientColors: project.gradient,
+                          );
+                        },
+                      ),
                     ),
                   )
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _visible
-                          ? const ProjectCard(
-                              title: "Paws (Pet Sales App)",
-                              description:
-                                  "PAWS is a user-to-user pet marketplace where users can list pets for sale, browse available pets, and connect directly with sellers or buyers. Built with Firebase, the app supports secure authentication, real-time data handling, and image storage.",
-                              imagePath: "assets/images/paws.png",
-                              githubUrl:
-                                  'https://github.com/AdharshPS/paws_app',
-                              gradientColors: [
-                                Color(0xFF2C5364),
-                                Color(0xFF0F2027),
-                              ],
-                            )
-                          : const SizedBox.shrink(),
-                      const SizedBox(width: 20),
-                      _visible
-                          ? const ProjectCard(
-                              title: "Notes App",
-                              description:
-                                  "A lightweight and fast notes application built with Flutter, featuring offline-first storage using Hive. Users can create, edit, delete, and organize notes with a clean and intuitive interface. Hive ensures high-performance local data handling without requiring internet access.",
-                              imagePath: "assets/images/notesapp.png",
-                              githubUrl:
-                                  'https://github.com/AdharshPS/Notes_app_updated',
-                              gradientColors: [
-                                Color(0xFF4568DC),
-                                Color(0xFFB06AB3),
-                              ],
-                            )
-                          : const SizedBox.shrink(),
-                      const SizedBox(width: 20),
-                      _visible
+                    children: List.generate(ProjectConstants.projects.length, (
+                      index,
+                    ) {
+                      final project = ProjectConstants.projects[index];
+                      return _visible
                           ? ProjectCard(
-                              title: "Netflix UI Clone",
-                              description:
-                                  "A visually accurate clone of the Netflix interface built using Flutter. The app replicates the home screen, movie categories, banners, and detail pages with smooth scrolling and responsive layouts. Designed to showcase UI development skills and component structuring in Flutter.",
-                              imagePath: "assets/images/netflix.png",
-                              githubUrl: 'https://github.com/AdharshPS/Netflix',
-                              gradientColors: [
-                                Color(0xFF43C6AC),
-                                Color(0xFF191654),
-                              ],
+                              title: project.title,
+                              description: project.description,
+                              imagePath: project.imagePath,
+                              githubUrl: project.gitHubUrl,
+                              gradientColors: project.gradient,
                             )
-                          : const SizedBox.shrink(),
-                    ],
+                          : const SizedBox.shrink();
+                    }),
+                    //   _visible
+                    //       ? const ProjectCard(
+                    //           title: "Paws (Pet Sales App)",
+                    //           description:
+                    //               "PAWS is a user-to-user pet marketplace where users can list pets for sale, browse available pets, and connect directly with sellers or buyers. Built with Firebase, the app supports secure authentication, real-time data handling, and image storage.",
+                    //           imagePath: "assets/images/paws.png",
+                    //           githubUrl:
+                    //               'https://github.com/AdharshPS/paws_app',
+                    //           gradientColors: [
+                    //             Color(0xFF2C5364),
+                    //             Color(0xFF0F2027),
+                    //           ],
+                    //         )
+                    //       : const SizedBox.shrink(),
+                    //   const SizedBox(width: 20),
+                    // ],
                   ),
           ],
         ),
